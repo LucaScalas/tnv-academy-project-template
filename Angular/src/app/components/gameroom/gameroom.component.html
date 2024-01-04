@@ -10,8 +10,10 @@
         <!-- Prima colonna -->
         <div class="col">
           <h4>Qual'è il titolo del film?</h4>
-          <img *ngIf="guess" [src]="poster" alt="">
-          <img *ngIf="!guess" [src]="poster" alt="" class="locandinaImg blurred-img">
+
+          
+           <tnv-prova *ngIf="guess"> </tnv-prova>
+           <img *ngIf="!guess" [src]="poster" alt="" class="locandinaImg blurred-img">
       
         </div>
       

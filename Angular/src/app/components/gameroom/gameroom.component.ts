@@ -33,6 +33,8 @@ export class GameroomComponent implements OnInit{
       this.production = this.movieData.production_companies[2].name;
       this.poster = this.imageurl + this.movieData.poster_path;
     });
+
+    
   }
 
   onSubmit(form: NgForm) {
@@ -48,8 +50,9 @@ export class GameroomComponent implements OnInit{
       // Esegui azioni basate sul confronto negativo
     }
 
-
+   
 
   }
+    
   
 }
