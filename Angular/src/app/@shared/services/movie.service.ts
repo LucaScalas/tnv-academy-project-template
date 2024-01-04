@@ -13,6 +13,9 @@ export class MovieService {
   getMovieData(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
+
+  
+
 }
 
 
