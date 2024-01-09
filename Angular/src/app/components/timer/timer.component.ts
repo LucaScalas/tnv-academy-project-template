@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { TimerService } from 'src/app/@core/services/timer.service';
 
 @Component({
@@ -6,74 +6,53 @@ import { TimerService } from 'src/app/@core/services/timer.service';
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss']
 })
-export class TimerComponent implements OnDestroy {
-  counter: any;
-  timerRef: any;
-  running: boolean = false;
-  startText = 'Start';
+export class TimerComponent implements OnDestroy{
+  secondsElapsed = 0;
+  timerRunning = false;
+  temp!:number;
 
-  constructor() {
-    // Inizializza le variabili nel costruttore se necessario
-    this.counter = 0; // o qualsiasi altro valore iniziale desiderato
-    this.timerRef = 0;
-  }
+  private timerSubscription: any;
 
+  constructor(private timerService: TimerService) {}
 
+ 
 
-  startTimer() {
-    this.running = !this.running;
-    if (this.running) {
-      this.startText = 'Stop';
-      const startTime = Date.now() - (this.counter || 0);
-      this.timerRef = setInterval(() => {
-        const elapsedTime = Date.now() - startTime;
-        this.counter = elapsedTime;
+  startTimer(): void {
+    if (!this.timerRunning) {
+      this.timerService.startTimer();
+      this.timerSubscription = this.timerService.getTimer().subscribe((seconds) => {
+        this.secondsElapsed = seconds;
+        this.timerService.setSeconds(this.secondsElapsed);
+
+    
+        console.log(seconds);
       });
-    } else {
-      this.startText = 'Start';
-      if (this.timerRef !== undefined) {
-        clearInterval(this.timerRef);
+      this.timerRunning = true;
+    }
+  }
+
+  stopTimer(): void {
+    if (this.timerRunning) {
+      this.timerService.setSeconds(this.secondsElapsed);
+      this.timerService.stopTimer();
+      if (this.timerSubscription) {
+        this.timerSubscription.unsubscribe();
       }
+      this.timerRunning = false;
     }
   }
 
-    @Output() inviaTempoPartita = new EventEmitter<string>()
-    onClick(tempoPartita: number = this.counter) {
-    this.inviaTempoPartita.emit(`${tempoPartita}`);
+
+  ngOnDestroy(): void {
+    this.stopTimer();
+  }
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler(event: Event): void {
+   
+    this.timerService.setSeconds(0);
   }
 
-  clearTimer() {
-    this.running = false;
-    this.startText = 'Start';
-    this.counter = undefined;
-    if (this.timerRef !== undefined) {
-      clearInterval(this.timerRef);
-    }
-  }
+  
 
-  // Visualizza un formato min-sec 0.00 
-  formatTime(milliseconds: number): string {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    const formattedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-    const decimalPart = (milliseconds % 1000) / 1000;
 
-    return `${minutes}:${formattedSeconds} ${decimalPart.toFixed(2).slice(4)}`;
-  }
-
-  newCardQuestion() {
-    // Implementa la logica della funzione newCardQuestion qui
-    console.log('Nuova domanda inserita!');
-  }
-
-  setUserPoints() {
-    // Implementare la funzione che incrementa un punteggio di un utente
-  }
-
-  ngOnDestroy() {
-    if (this.timerRef !== undefined) {
-      clearInterval(this.timerRef);
-    }
-  }
 }

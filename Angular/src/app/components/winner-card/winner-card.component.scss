@@ -1,14 +1,17 @@
-.container{
+.card{
     background-image: url(/Angular/src/assets/images/);
     position: relative;
     z-index: 1;
+    width: 100vw;
+    height: 120vh;
+    overflow: hidden;
 }
 
 .video-background {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100%;
     object-fit: cover;
     z-index: -1;
@@ -16,29 +19,17 @@
 
 .game{
     width: 50vw;
-    height: 900px; 
+    height: 1000px; 
 
     border: 2px black;
     border-radius: 20px;
-    margin-top: 8vh;
+    margin-top: 4vh;
 
     padding-left: 4vw;
     padding-right: 4vw;
-    padding-top: 4vh;
     padding-bottom: 4vh;
 
     color: white;
-}
-
-.container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient( rgba(162, 162, 245, 0),rgb(0, 0, 36));
-    z-index: -1; /* Assicura che lo sfondo sia posizionato dietro agli altri elementi */
 }
 
 .divider{
@@ -53,6 +44,10 @@ h2{
 }
 
 h3{
+    margin-top: 2vh;
+}
+
+p{
     margin-top: 2vh;
 }
 
@@ -81,3 +76,8 @@ h3{
     font-weight: bold;
     font-size: 1.5rem;
 }
+
+.star-size {
+    font-size: 48px; 
+    border-radius: 2px;
+  }

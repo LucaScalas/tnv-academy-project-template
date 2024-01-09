@@ -1,4 +1,9 @@
-<div>{{ formatTime(counter) }}</div>
-<button class="btn btn-start" (click)="startTimer()">{{ startText }} Game</button>
-<button class="btn" (click)="newCardQuestion()">Invia ></button>
-<button class="d-none" (click)="clearTimer()">Clear</button>
+
+<div class="time">
+    <p>Time: {{ secondsElapsed }}</p>
+    <button  (click)="startTimer()" [disabled]="timerRunning">inizio Gioco</button>
+    <p> per ogni indizio +30s nel tempo finale </p>
+    
+  </div>
+
+

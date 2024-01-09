@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { of } from "rxjs";
+import { of, tap } from "rxjs";
 import { LoginDTO, RegisterDTO, User } from "src/app/models/user";
 import { Observable } from "rxjs";
 
@@ -16,10 +16,11 @@ export class AuthService {
   login(loginData: LoginDTO) : Observable<any> {
 
        const user: User = {
-        name: 'Paolino',
-      surname: 'Paperino',
-      username: 'papero123'
-    }
+         name: 'Paolino',
+         surname: 'Paperino',
+         username: 'papero123',
+         id: undefined
+       }
     return of(user);
     // Fine stub 
   }
@@ -48,15 +49,15 @@ export class AuthService {
     // Fine stub 
   } */
 
-  register(registerData: RegisterDTO) {
+  register(registerData: RegisterDTO): Observable<any> {
     console.log('auth service.ts', registerData);
+        const url = `${this.springBootUrl}/users/`;
 
-    const url = `${this.springBootUrl}/`; // Sostituisci con il tuo endpoint effettivo per il login
-    return this.http.post(url, registerData);
-
-
-    // TODO Chiamare il servizio per la registrazione e redirigere l'utente alla root per il login
-    //this.router.navigateByUrl("/");
+    return this.http.post(url, registerData)
+      .pipe(
+        // Se la registrazione ha successo, reindirizza l'utente alla pagina di login
+        tap(() => this.router.navigateByUrl('/login'))
+      );
   }
 
   logout() {
